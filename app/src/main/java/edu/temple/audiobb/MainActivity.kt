@@ -7,5 +7,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val booklist: BookList = BookList()
+        val bookTitles = resources.getStringArray(R.array.Book_Titles)
+        val bookAuthors = resources.getStringArray(R.array.Book_Authors)
+
+        //initialize booklist
+        for(i in 0..10){
+            val b: Book = Book(bookTitles[i], bookAuthors[i])
+            booklist.add(b)
+        }
+
+
     }
+
+
 }

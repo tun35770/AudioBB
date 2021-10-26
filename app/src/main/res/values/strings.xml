@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">AudioBB</string>
+    <string-array name="Book_Titles">
+        <item>Ulysses</item>
+        <item>Don Quixote</item>
+        <item>The Great Gatsby</item>
+        <item>Moby Dick</item>
+        <item>Hamlet</item>
+        <item>The Divine Comedy</item>
+        <item>The Catcher in the Rye</item>
+        <item>Alice's Adventures in Wonderland</item>
+        <item>The Iliad</item>
+        <item>Great Expectations</item>
+        <item>Nineteen Eighty Four</item>
+    </string-array>
+
+    <string-array name="Book_Authors">
+        <item>James Joyce</item>
+        <item>Miguel de Cervantes</item>
+        <item>F. Scott Fitsgerald</item>
+        <item>Herman Melville</item>
+        <item>William Shakespeare</item>
+        <item>Dante Alighieri</item>
+        <item>J. D. Salinger</item>
+        <item>Lewis Carroll</item>
+        <item>Homer</item>
+        <item>Charles Dickens</item>
+        <item>George Orwell</item>
+    </string-array>
 </resources>
