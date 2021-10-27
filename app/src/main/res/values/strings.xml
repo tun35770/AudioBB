@@ -8,7 +8,7 @@
         <item>Hamlet</item>
         <item>The Divine Comedy</item>
         <item>The Catcher in the Rye</item>
-        <item>Alice's Adventures in Wonderland</item>
+        <item>Alice\'s Adventures in Wonderland</item>
         <item>The Iliad</item>
         <item>Great Expectations</item>
         <item>Nineteen Eighty Four</item>
@@ -27,6 +27,4 @@
         <item>Charles Dickens</item>
         <item>George Orwell</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

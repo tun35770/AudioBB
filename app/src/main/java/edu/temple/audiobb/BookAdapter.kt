@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class BookAdapter (val _context : Context, val _bookList : BookList, val ocl: View.OnClickListener): RecyclerView.Adapter<BookAdapter.ViewHolder>(){
@@ -15,7 +16,7 @@ class BookAdapter (val _context : Context, val _bookList : BookList, val ocl: Vi
     //ViewHolder class
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val booklistViewRecycler : ImageView
+        val booklistViewRecycler : View
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -37,9 +38,8 @@ class BookAdapter (val _context : Context, val _bookList : BookList, val ocl: Vi
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        val position = _position
-        val titleTextView = viewHolder.booklistViewRecycler.findViewById<View>(R.id.titleTextView)
-        val authorTextView = viewHolder.booklistViewRecycler.findViewById<View>(R.id.authorTextView)
+        viewHolder.booklistViewRecycler.findViewById<TextView>(R.id.titleTextView).text = bookList.get(_position).title
+        viewHolder.booklistViewRecycler.findViewById<TextView>(R.id.authorTextView).text = bookList.get(_position).author
 
         viewHolder.booklistViewRecycler.setOnClickListener(ocl)
 

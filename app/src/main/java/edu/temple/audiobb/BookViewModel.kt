@@ -6,11 +6,10 @@ import androidx.lifecycle.ViewModel
 
 class BookViewModel : ViewModel() {
 
-    private var book: MutableLiveData<Book>
-        get() {
-            return book
-        }
-        set(value) {book = value}
+    private val book: MutableLiveData<Book> by lazy {
+        MutableLiveData<Book>()
+    }
+
 
 
     fun setBook(book: Book): Unit{

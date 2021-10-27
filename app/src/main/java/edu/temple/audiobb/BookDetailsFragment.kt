@@ -43,8 +43,8 @@ class BookDetailsFragment : Fragment() {
 
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
 
-        titleTextView = layout.findViewById(R.id.titleTextView)
-        authorTextView = layout.findViewById(R.id.authorTextView)
+        titleTextView = layout.findViewById(R.id.detailsTitleTextView)
+        authorTextView = layout.findViewById(R.id.detailsAuthorTextView)
 
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             titleTextView.text = it.title

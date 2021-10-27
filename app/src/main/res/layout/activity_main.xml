@@ -8,13 +8,14 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/booklistFragmentContainer"
-        android:layout_width="415dp"
-        android:layout_height="360dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/bookdetailsFragmentContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bookdetailsFragmentContainer"

@@ -2,6 +2,7 @@ package edu.temple.audiobb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 
 class MainActivity : AppCompatActivity() {

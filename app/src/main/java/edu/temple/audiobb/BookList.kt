@@ -2,7 +2,7 @@ package edu.temple.audiobb
 
 class BookList {
 
-    private lateinit var books: ArrayList<Book>
+    private var books: ArrayList<Book> = arrayListOf()
     private var size: Int = 0
 
     //add a book to the list
