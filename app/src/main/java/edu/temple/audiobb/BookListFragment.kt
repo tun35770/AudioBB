@@ -35,11 +35,15 @@ class BookListFragment : Fragment() {
         val layout = inflater.inflate(R.layout.fragment_book_list, container, false)
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
 
-        recyclerView = layout.findViewById(R.id.booklistRecyclerView)
+        recyclerView = layout.findViewById(R.id.booklistRecyclerView)//get recyclerView reference
+
+        //create the on click listener
         val ocl: View.OnClickListener = View.OnClickListener { view ->
             val pos : Int = recyclerView.getChildAdapterPosition(view)
             bookViewModel.setBook(booklist.get(pos))
         }
+
+        recyclerView.adapter = BookAdapter(requireContext(), booklist, ocl) // pass booklist and ocl to adapter
 
         return layout
     }
