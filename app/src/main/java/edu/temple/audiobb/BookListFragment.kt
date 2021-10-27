@@ -41,6 +41,7 @@ class BookListFragment : Fragment() {
         val ocl: View.OnClickListener = View.OnClickListener { view ->
             val pos : Int = recyclerView.getChildAdapterPosition(view)
             bookViewModel.setBook(booklist.get(pos))
+            (activity as EventInterface).selectionMade()
         }
 
         recyclerView.adapter = BookAdapter(requireContext(), booklist, ocl) // pass booklist and ocl to adapter
@@ -64,5 +65,9 @@ class BookListFragment : Fragment() {
             fragment.booklist = booklist
             return fragment
         }
+    }
+
+    interface EventInterface{
+        fun selectionMade()
     }
 }

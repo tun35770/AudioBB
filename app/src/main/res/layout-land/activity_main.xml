@@ -6,16 +6,17 @@
     android:layout_height="match_parent">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/booklistFragmentContainer"
+        android:id="@+id/container1"
+
         android:layout_width="369dp"
         android:layout_height="410dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bookdetailsFragmentContainer"
+        app:layout_constraintEnd_toStartOf="@+id/container2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/bookdetailsFragmentContainer"
+        android:id="@+id/container2"
         android:layout_width="358dp"
         android:layout_height="408dp"
         app:layout_constraintBottom_toBottomOf="parent"
