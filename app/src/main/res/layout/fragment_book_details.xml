@@ -22,12 +22,12 @@
 
     <TextView
         android:id="@+id/detailsTitleTextView"
-        android:layout_width="408dp"
-        android:layout_height="87dp"
+        android:layout_width="403dp"
+        android:layout_height="83dp"
         android:layout_marginTop="96dp"
         android:text="TITLE OF BOOK"
         android:textAlignment="center"
-        android:textSize="34sp"
+        android:textSize="32sp"
         android:textStyle="bold|italic"
         android:typeface="serif"
         app:layout_constraintEnd_toEndOf="parent"
