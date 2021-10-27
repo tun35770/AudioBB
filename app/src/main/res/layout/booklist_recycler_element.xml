@@ -8,21 +8,24 @@
 
     <TextView
         android:id="@+id/titleTextView"
-        android:layout_width="182dp"
-        android:layout_height="32dp"
+        android:layout_width="237dp"
+        android:layout_height="41dp"
+        android:layout_marginEnd="4dp"
         android:text="titleText"
-        android:textAlignment="viewStart"
-        android:textSize="24sp"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/authorTextView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/authorTextView"
         android:layout_width="170dp"
-        android:layout_height="30dp"
+        android:layout_height="42dp"
         android:text="authorText"
-        android:textAlignment="textEnd"
-        android:textSize="20sp"
+        android:textAlignment="viewEnd"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
