@@ -17,6 +17,7 @@
         android:textStyle="bold"
         android:typeface="normal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailsTitleTextView" />
 
@@ -24,14 +25,14 @@
         android:id="@+id/detailsTitleTextView"
         android:layout_width="412dp"
         android:layout_height="59dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="104dp"
         android:text="TITLE OF BOOK"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         android:typeface="serif"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
