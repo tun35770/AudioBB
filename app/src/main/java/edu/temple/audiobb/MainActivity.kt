@@ -19,6 +19,14 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val booklistFragment = BookListFragment.newInstance(booklist)
+        val bookdetailsFragment = BookDetailsFragment()
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.booklistFragmentContainer, booklistFragment)
+            .add(R.id.bookdetailsFragmentContainer, bookdetailsFragment)
+            .commit()
+
     }
 
 
