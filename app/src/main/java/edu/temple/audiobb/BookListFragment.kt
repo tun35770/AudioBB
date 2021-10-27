@@ -30,7 +30,14 @@ class BookListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_book_list, container, false)
+        val layout = inflater.inflate(R.layout.fragment_book_list, container, false)
+        recyclerView = layout.findViewById(R.id.booklistRecyclerView)
+        val ocl: View.OnClickListener = View.OnClickListener { view ->
+            val pos : Int = recyclerView.getChildAdapterPosition(view)
+
+        }
+
+        return layout
     }
 
     companion object {
