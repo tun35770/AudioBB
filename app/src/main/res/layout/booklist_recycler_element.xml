@@ -8,22 +8,25 @@
 
     <TextView
         android:id="@+id/titleTextView"
-        android:layout_width="237dp"
-        android:layout_height="41dp"
+        android:layout_width="263dp"
+        android:layout_height="33dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="3dp"
         android:text="titleText"
-        android:textAlignment="textStart"
+        android:textAlignment="viewStart"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/authorTextView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/authorTextView"
-        android:layout_width="165dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="146dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
         android:text="authorText"
         android:textAlignment="viewEnd"
         android:textSize="14sp"
