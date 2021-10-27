@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -17,6 +18,7 @@ class BookListFragment : Fragment() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var booklist: BookList
+    lateinit private var bookViewModel: BookViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +33,12 @@ class BookListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val layout = inflater.inflate(R.layout.fragment_book_list, container, false)
+        bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
+
         recyclerView = layout.findViewById(R.id.booklistRecyclerView)
         val ocl: View.OnClickListener = View.OnClickListener { view ->
             val pos : Int = recyclerView.getChildAdapterPosition(view)
-
+            bookViewModel.setBook(booklist.get(pos))
         }
 
         return layout
