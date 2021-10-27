@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
                     .commit()
         } else if(!bookViewModel.getBook().value?.title.isNullOrBlank()) { // If moving to single-pane
             supportFragmentManager.beginTransaction()                 // but a book was selected
-                .add(R.id.container1, BookDetailsFragment())              // before the switch
+                .replace(R.id.container1, BookDetailsFragment())              // before the switch
                 .addToBackStack(null)
                 .commit()
         }
