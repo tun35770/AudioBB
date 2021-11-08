@@ -1,5 +1,6 @@
 package edu.temple.audiobb
 
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 
@@ -10,6 +11,7 @@ class BookList() : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         size = parcel.readInt()
+        parcel.readList(books, Book::class.java.getClassLoader())
     }
 
     //add a book to the list
@@ -41,6 +43,7 @@ class BookList() : Parcelable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(size)
+        parcel.writeList(books)
     }
 
     override fun describeContents(): Int {
@@ -55,5 +58,5 @@ class BookList() : Parcelable {
         override fun newArray(size: Int): Array<BookList?> {
             return arrayOfNulls(size)
         }
-    }
+}
 }

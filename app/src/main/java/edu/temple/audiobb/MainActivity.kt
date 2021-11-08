@@ -27,6 +27,9 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
             startActivity(intent)
         }
 
+        val book: Book = Book("test", "test", 1, "Test")
+        bookList.add(book)
+
         twoPane = findViewById<View>(R.id.container2) != null
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
 
@@ -93,4 +96,9 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
                 .commit()
     }
 
+    override fun onResume() {
+        super.onResume()
+        for(i in 0 until bookList.size())
+            Log.d("Booklist", bookList.get(i).title!!)
+    }
 }

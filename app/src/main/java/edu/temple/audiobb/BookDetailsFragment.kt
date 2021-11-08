@@ -52,7 +52,7 @@ class BookDetailsFragment : Fragment() {
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             titleTextView.text = it.title
             authorTextView.text = it.author
-            imageView.setImageResource(it.id)
+           //imageView.setImageResource(it.id)
         })
     }
 

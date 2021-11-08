@@ -1,6 +1,5 @@
 package edu.temple.audiobb
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +9,7 @@ import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.squareup.picasso.Picasso
-import org.json.JSONArray
 import org.json.JSONException
 
 class BookSearchActivity : AppCompatActivity() {
@@ -48,6 +44,9 @@ class BookSearchActivity : AppCompatActivity() {
         if(getIntent().extras != null)
             bookList = intent.getParcelableExtra<BookList>("booklist")!!
 
+        Log.d("size", bookList.size().toString())
+        Log.d("lol", bookList.get(0).title!!)
+
         volleyQueue.add(
             JsonArrayRequest(Request.Method.GET
             , url
@@ -55,7 +54,7 @@ class BookSearchActivity : AppCompatActivity() {
             , {
                 Log.d("Response", it.toString())
                     try{
-                        bookList?.setEmpty()    //empty the current booklist
+                        //bookList.setEmpty()    //empty the current booklist
 
                         for(i in 0 until it.length()){  //get response
                             val responseObject = it.getJSONObject(i)
@@ -63,8 +62,7 @@ class BookSearchActivity : AppCompatActivity() {
                             , responseObject.getString("author")
                             , responseObject.getInt("id")
                             , responseObject.getString("cover_url"))
-
-                            bookList?.add(b)    //add book to bookList
+                            bookList.add(b)    //add book to bookList
                         }
                         finish()    //back to main activity
 
