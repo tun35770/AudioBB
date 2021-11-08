@@ -32,14 +32,14 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
                 supportFragmentManager.popBackStack()
 
         val booklist: BookList = BookList()
-        val bookTitles = resources.getStringArray(R.array.Book_Titles)
-        val bookAuthors = resources.getStringArray(R.array.Book_Authors)
+        //val bookTitles = resources.getStringArray(R.array.Book_Titles)
+        //val bookAuthors = resources.getStringArray(R.array.Book_Authors)
 
         //initialize booklist
-        for(i in 0..10){
-            val b: Book = Book(bookTitles[i], bookAuthors[i])
+        /*for(i in 0..10){
+            val b: Book = Book(bookTitles[i], bookAuthors[i], 0, "lol")
             booklist.add(b)
-        }
+        }*/
 
         // If fragment was not previously loaded (first time starting activity)
         // then add SelectionFragment
