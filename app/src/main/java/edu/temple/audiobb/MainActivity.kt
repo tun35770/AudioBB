@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
@@ -14,6 +15,13 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //launch search activity
+        val searchButton = findViewById<Button>(R.id.mainSearchButton)
+        searchButton.setOnClickListener{
+            val intent = Intent(this, BookSearchActivity::class.java)
+            startActivity(intent)
+        }
 
         twoPane = findViewById<View>(R.id.container2) != null
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
@@ -71,8 +79,6 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
             .add(R.id.container2, bookdetailsFragment)
             .commit()*/
 
-        val intent = Intent(this, BookSearchActivity::class.java)
-        startActivity(intent)
     }
 
     override fun selectionMade() {
