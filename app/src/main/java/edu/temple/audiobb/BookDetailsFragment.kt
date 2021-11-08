@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,7 @@ class BookDetailsFragment : Fragment() {
     lateinit private var bookViewModel: BookViewModel
     lateinit private var titleTextView: TextView
     lateinit private var authorTextView: TextView
+    lateinit private var imageView: ImageView
     lateinit private var layout: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +47,12 @@ class BookDetailsFragment : Fragment() {
 
         titleTextView = layout.findViewById(R.id.detailsTitleTextView)
         authorTextView = layout.findViewById(R.id.detailsAuthorTextView)
+        imageView = layout.findViewById(R.id.detailsImageView)
 
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             titleTextView.text = it.title
             authorTextView.text = it.author
+            imageView.setImageResource(it.id)
         })
     }
 
