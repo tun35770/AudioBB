@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AudioBB</string>
+    <string name="searchEditText_Default">Enter Book Title...</string>
+    <string name="searchButton_Default">Search</string>
     <!--<string-array name="Book_Titles">
         <item>Ulysses</item>
         <item>Don Quixote</item>
