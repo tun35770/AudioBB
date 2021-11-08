@@ -1,5 +1,6 @@
 package edu.temple.audiobb
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -70,6 +71,8 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
             .add(R.id.container2, bookdetailsFragment)
             .commit()*/
 
+        val intent = Intent(this, BookSearchActivity::class.java)
+        startActivity(intent)
     }
 
     override fun selectionMade() {
