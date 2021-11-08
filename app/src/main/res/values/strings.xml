@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AudioBB</string>
-    <string-array name="Book_Titles">
+    <!--<string-array name="Book_Titles">
         <item>Ulysses</item>
         <item>Don Quixote</item>
         <item>The Great Gatsby</item>
@@ -26,5 +26,5 @@
         <item>Homer</item>
         <item>Charles Dickens</item>
         <item>George Orwell</item>
-    </string-array>
+    </string-array>                             -->
 </resources>
