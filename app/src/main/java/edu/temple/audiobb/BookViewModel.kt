@@ -11,7 +11,6 @@ class BookViewModel : ViewModel() {
     }
 
 
-
     fun setBook(book: Book): Unit{
         this.book.value = book
     }

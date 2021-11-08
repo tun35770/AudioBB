@@ -3,6 +3,7 @@ package edu.temple.audiobb
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
 
     var twoPane = false
     lateinit var bookViewModel: BookViewModel
+    var bookList: BookList = BookList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,8 +20,10 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
 
         //launch search activity
         val searchButton = findViewById<Button>(R.id.mainSearchButton)
-        searchButton.setOnClickListener{
-            val intent = Intent(this, BookSearchActivity::class.java)
+        searchButton.setOnClickListener {
+            val intent = Intent(this, BookSearchActivity::class.java).apply {
+                putExtra("booklist", bookList)
+            }
             startActivity(intent)
         }
 
@@ -40,7 +44,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
             && twoPane)
                 supportFragmentManager.popBackStack()
 
-        val booklist: BookList = BookList()
+
         //val bookTitles = resources.getStringArray(R.array.Book_Titles)
         //val bookAuthors = resources.getStringArray(R.array.Book_Authors)
 
@@ -54,7 +58,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
         // then add SelectionFragment
         if (savedInstanceState == null)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container1, BookListFragment.newInstance(booklist))
+                .replace(R.id.container1, BookListFragment.newInstance(bookList))
                 .commit()
 
         // If second container is available, place an

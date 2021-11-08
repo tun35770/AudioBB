@@ -1,5 +1,6 @@
 package edu.temple.audiobb
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,7 +30,7 @@ class BookSearchActivity : AppCompatActivity() {
         Volley.newRequestQueue(this)
     }
 
-    lateinit var testText : String
+    lateinit var bookList: BookList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +45,9 @@ class BookSearchActivity : AppCompatActivity() {
     private fun fetchBookData(searchTerm: String){
         val url = "https://kamorris.com/lab/cis3515/search.php?term=${searchTerm}"
 
+        if(getIntent().extras != null)
+            bookList = intent.getParcelableExtra<BookList>("booklist")!!
+
         volleyQueue.add(
             JsonArrayRequest(Request.Method.GET
             , url
@@ -51,10 +55,22 @@ class BookSearchActivity : AppCompatActivity() {
             , {
                 Log.d("Response", it.toString())
                     try{
-                        testText = it.getJSONObject(0).getString("title")
-                        Toast.makeText(this, testText, Toast.LENGTH_SHORT).show()
+                        bookList?.setEmpty()    //empty the current booklist
+
+                        for(i in 0 until it.length()){  //get response
+                            val responseObject = it.getJSONObject(i)
+                            val b = Book(responseObject.getString("title")
+                            , responseObject.getString("author")
+                            , responseObject.getInt("id")
+                            , responseObject.getString("cover_url"))
+
+                            bookList?.add(b)    //add book to bookList
+                        }
+                        finish()    //back to main activity
+
                     } catch(e : JSONException){
                         e.printStackTrace()
+                        finish()    //back to main activity
                     }
                 }
             , {

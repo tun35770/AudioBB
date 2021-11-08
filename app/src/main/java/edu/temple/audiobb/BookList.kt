@@ -29,6 +29,11 @@ class BookList() : Parcelable {
         return books[index]
     }
 
+    fun setEmpty(): Unit{
+        books = ArrayList<Book>()
+        size = 0;
+    }
+
     //get size
     fun size(): Int{
         return size
