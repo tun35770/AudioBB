@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.squareup.picasso.Picasso
 
 
 /**
@@ -52,7 +53,9 @@ class BookDetailsFragment : Fragment() {
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             titleTextView.text = it.title
             authorTextView.text = it.author
-           //imageView.setImageResource(it.id)
+            Picasso.get()
+                .load(it.coverURL)
+                .into(imageView)
         })
     }
 

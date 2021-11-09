@@ -47,7 +47,7 @@ class BookListFragment() : Fragment() {
         // Inflate the layout for this fragment
         val layout = inflater.inflate(R.layout.fragment_book_list, container, false)
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
-
+        bookListViewModel = ViewModelProvider(requireActivity()).get(BookListViewModel::class.java)
         recyclerView = layout.findViewById(R.id.booklistRecyclerView)//get recyclerView reference
 
         return layout
@@ -55,8 +55,6 @@ class BookListFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        bookListViewModel = ViewModelProvider(requireActivity()).get(BookListViewModel::class.java)
 
         bookListViewModel.getBookList().observe(viewLifecycleOwner, Observer {it ->
             booklist = it

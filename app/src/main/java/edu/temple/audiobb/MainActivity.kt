@@ -29,12 +29,9 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
             startActivityForResult(intent, 1)
         }
 
-        /*val book: Book = Book("test", "test", 1, "Test")
-        bookList.add(book)*/
-
         twoPane = findViewById<View>(R.id.container2) != null
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
-        bookListViewModel = ViewModelProvider(this).get(BookListViewModel::class.java)
+        bookListViewModel = ViewModelProvider(this).get(BookListViewModel::class.java)  //updating booklist to match user search results
         bookListViewModel.setBookList(bookList)
 
         // Pop DisplayFragment from stack if book was previously selected,
@@ -50,16 +47,6 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
         if(supportFragmentManager.findFragmentById(R.id.container1) is BookDetailsFragment
             && twoPane)
                 supportFragmentManager.popBackStack()
-
-
-        //val bookTitles = resources.getStringArray(R.array.Book_Titles)
-        //val bookAuthors = resources.getStringArray(R.array.Book_Authors)
-
-        //initialize booklist
-        /*for(i in 0..10){
-            val b: Book = Book(bookTitles[i], bookAuthors[i], 0, "lol")
-            booklist.add(b)
-        }*/
 
         // If fragment was not previously loaded (first time starting activity)
         // then add SelectionFragment
@@ -102,25 +89,20 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
 
     override fun onResume() {
         super.onResume()
-
     }
 
+    //when search activity returns
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.d("okay", "okay")
                 if (data != null) {
-                    val newBookList = data.getParcelableExtra<BookList>("list")!!
-                    for (i in 0 until newBookList.size()) {
+                    val newBookList = data.getParcelableExtra<BookList>("list")!!   //get bookList
+                    /*for (i in 0 until newBookList.size()) {
                         Log.d("Result", newBookList.get(i).title!!)
-                    }
-                    /*for(i in 0 until newBookList.size()) {
-                    val newBook: Book = data.getParcelableExtra<BookList>("list")!!.get(i)
-                    bookList.add(newBook)
-                }*/
-                    bookListViewModel.setBookList(newBookList)
+                    }*/
+                    bookListViewModel.setBookList(newBookList)  //set bookList to result from user search
                 }
             }
         }

@@ -40,6 +40,7 @@ class BookSearchActivity : AppCompatActivity() {
 
     }
 
+    //fetches books from api
     private fun fetchBookData(searchTerm: String){
         val url = "https://kamorris.com/lab/cis3515/search.php?term=${searchTerm}"
 
@@ -51,11 +52,12 @@ class BookSearchActivity : AppCompatActivity() {
             , url
             , null
             , {
-                Log.d("Response", it.toString())
+               //Log.d("Response", it.toString())
                     try{
                         bookList.setEmpty()    //empty the current booklist
                         val resultIntent: Intent = Intent()
-                        for(i in 0 until it.length()){  //get response
+
+                        for(i in 0 until it.length()){  //get response of books
                             val responseObject = it.getJSONObject(i)
                             val b = Book(responseObject.getString("title")
                             , responseObject.getString("author")
@@ -63,6 +65,7 @@ class BookSearchActivity : AppCompatActivity() {
                             , responseObject.getString("cover_url"))
                             bookList.add(b)    //add book to bookList
                         }
+
                         resultIntent.putExtra("list", bookList)
                         setResult(Activity.RESULT_OK, resultIntent)
                         finish()    //back to main activity
