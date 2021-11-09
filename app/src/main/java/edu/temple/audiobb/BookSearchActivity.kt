@@ -63,6 +63,7 @@ class BookSearchActivity : AppCompatActivity() {
                             , responseObject.getString("author")
                             , responseObject.getInt("id")
                             , responseObject.getString("cover_url"))
+
                             bookList.add(b)    //add book to bookList
                         }
 

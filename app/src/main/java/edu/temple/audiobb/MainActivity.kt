@@ -89,6 +89,12 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
 
     override fun onResume() {
         super.onResume()
+
+        //when user searches on BookDetailsFragment
+        //BookListFragment will be shown after search
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container1, BookListFragment.newInstance())
+            .commit()
     }
 
     //when search activity returns
