@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,11 +19,19 @@ import androidx.recyclerview.widget.RecyclerView
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class BookListFragment : Fragment() {
+class BookListFragment() : Fragment() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var booklist: BookList
     private lateinit var bookViewModel: BookViewModel
+    private lateinit var bookListViewModel: BookListViewModel
+
+    //create the on click listener
+    val ocl: View.OnClickListener = View.OnClickListener { view ->
+        val pos : Int = recyclerView.getChildAdapterPosition(view)
+        bookViewModel.setBook(booklist.get(pos))
+        (activity as EventInterface).selectionMade()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +50,18 @@ class BookListFragment : Fragment() {
 
         recyclerView = layout.findViewById(R.id.booklistRecyclerView)//get recyclerView reference
 
-        //create the on click listener
-        val ocl: View.OnClickListener = View.OnClickListener { view ->
-            val pos : Int = recyclerView.getChildAdapterPosition(view)
-            bookViewModel.setBook(booklist.get(pos))
-            (activity as EventInterface).selectionMade()
-        }
-
-        recyclerView.adapter = BookAdapter(requireContext(), booklist, ocl) // pass booklist and ocl to adapter
-
         return layout
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        bookListViewModel = ViewModelProvider(requireActivity()).get(BookListViewModel::class.java)
+
+        bookListViewModel.getBookList().observe(viewLifecycleOwner, Observer {it ->
+            booklist = it
+            recyclerView.adapter = BookAdapter(requireContext(), booklist, ocl) // pass booklist and ocl to adapter
+        })
     }
 
     companion object {
@@ -64,11 +75,11 @@ class BookListFragment : Fragment() {
          */
 
         @JvmStatic
-        fun newInstance(booklist: BookList) =
-            BookListFragment().apply {
+        fun newInstance():BookListFragment {
+            return BookListFragment()/*.apply {
                 arguments = Bundle().apply{
                     putParcelable("list", booklist)
-            }
+            }*/
 
             /*:BookListFragment{
             val fragment = BookListFragment()

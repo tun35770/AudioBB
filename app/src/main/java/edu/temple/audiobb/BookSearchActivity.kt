@@ -1,5 +1,7 @@
 package edu.temple.audiobb
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -44,9 +46,6 @@ class BookSearchActivity : AppCompatActivity() {
         if(getIntent().extras != null)
             bookList = intent.getParcelableExtra<BookList>("booklist")!!
 
-        Log.d("size", bookList.size().toString())
-        Log.d("lol", bookList.get(0).title!!)
-
         volleyQueue.add(
             JsonArrayRequest(Request.Method.GET
             , url
@@ -54,8 +53,8 @@ class BookSearchActivity : AppCompatActivity() {
             , {
                 Log.d("Response", it.toString())
                     try{
-                        //bookList.setEmpty()    //empty the current booklist
-
+                        bookList.setEmpty()    //empty the current booklist
+                        val resultIntent: Intent = Intent()
                         for(i in 0 until it.length()){  //get response
                             val responseObject = it.getJSONObject(i)
                             val b = Book(responseObject.getString("title")
@@ -64,6 +63,8 @@ class BookSearchActivity : AppCompatActivity() {
                             , responseObject.getString("cover_url"))
                             bookList.add(b)    //add book to bookList
                         }
+                        resultIntent.putExtra("list", bookList)
+                        setResult(Activity.RESULT_OK, resultIntent)
                         finish()    //back to main activity
 
                     } catch(e : JSONException){

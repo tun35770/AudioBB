@@ -1,5 +1,6 @@
 package edu.temple.audiobb
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
 
     var twoPane = false
     lateinit var bookViewModel: BookViewModel
+    lateinit var bookListViewModel: BookListViewModel
     var bookList: BookList = BookList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,14 +26,16 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
             val intent = Intent(this, BookSearchActivity::class.java).apply {
                 putExtra("booklist", bookList)
             }
-            startActivity(intent)
+            startActivityForResult(intent, 1)
         }
 
-        val book: Book = Book("test", "test", 1, "Test")
-        bookList.add(book)
+        /*val book: Book = Book("test", "test", 1, "Test")
+        bookList.add(book)*/
 
         twoPane = findViewById<View>(R.id.container2) != null
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
+        bookListViewModel = ViewModelProvider(this).get(BookListViewModel::class.java)
+        bookListViewModel.setBookList(bookList)
 
         // Pop DisplayFragment from stack if book was previously selected,
         // but user has since cleared selection
@@ -61,7 +65,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
         // then add SelectionFragment
         if (savedInstanceState == null)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container1, BookListFragment.newInstance(bookList))
+                .replace(R.id.container1, BookListFragment.newInstance())
                 .commit()
 
         // If second container is available, place an
@@ -98,7 +102,27 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
 
     override fun onResume() {
         super.onResume()
-        for(i in 0 until bookList.size())
-            Log.d("Booklist", bookList.get(i).title!!)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d("okay", "okay")
+                if (data != null) {
+                    val newBookList = data.getParcelableExtra<BookList>("list")!!
+                    for (i in 0 until newBookList.size()) {
+                        Log.d("Result", newBookList.get(i).title!!)
+                    }
+                    /*for(i in 0 until newBookList.size()) {
+                    val newBook: Book = data.getParcelableExtra<BookList>("list")!!.get(i)
+                    bookList.add(newBook)
+                }*/
+                    bookListViewModel.setBookList(newBookList)
+                }
+            }
+        }
     }
 }
