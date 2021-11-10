@@ -9,35 +9,35 @@
     <TextView
         android:id="@+id/detailsAuthorTextView"
         android:layout_width="408dp"
-        android:layout_height="43dp"
+        android:layout_height="0dp"
         android:layout_marginTop="4dp"
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold"
         android:typeface="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.442"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailsTitleTextView" />
+        app:layout_constraintTop_toBottomOf="@id/detailsTitleTextView" />
 
     <TextView
         android:id="@+id/detailsTitleTextView"
         android:layout_width="412dp"
-        android:layout_height="59dp"
-        android:layout_marginTop="212dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="240dp"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold|italic"
         android:typeface="serif"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/detailsImageView"
-        android:layout_width="271dp"
-        android:layout_height="207dp"
+        android:layout_width="257dp"
+        android:layout_height="240dp"
         app:layout_constraintBottom_toTopOf="@+id/detailsTitleTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

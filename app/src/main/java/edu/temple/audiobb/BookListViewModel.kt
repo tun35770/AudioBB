@@ -16,7 +16,6 @@ class BookListViewModel: ViewModel() {
     }
 
     fun getBookList(): LiveData<BookList> {
-        Log.d("BOOKLIST", bookList.value?.size().toString())
         return bookList
     }
 

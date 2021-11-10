@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
         twoPane = findViewById<View>(R.id.container2) != null
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
         bookListViewModel = ViewModelProvider(this).get(BookListViewModel::class.java)  //updating booklist to match user search results
-        //bookListViewModel.setBookList(bookList)
 
         // Pop DisplayFragment from stack if book was previously selected,
         // but user has since cleared selection
