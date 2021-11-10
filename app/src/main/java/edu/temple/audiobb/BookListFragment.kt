@@ -35,9 +35,9 @@ class BookListFragment() : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            booklist = it.getParcelable<BookList>("list")!!
-        }
+
+        bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
+        bookListViewModel = ViewModelProvider(requireActivity()).get(BookListViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -46,8 +46,7 @@ class BookListFragment() : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val layout = inflater.inflate(R.layout.fragment_book_list, container, false)
-        bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
-        bookListViewModel = ViewModelProvider(requireActivity()).get(BookListViewModel::class.java)
+
         recyclerView = layout.findViewById(R.id.booklistRecyclerView)//get recyclerView reference
 
         return layout
@@ -58,7 +57,7 @@ class BookListFragment() : Fragment() {
 
         bookListViewModel.getBookList().observe(viewLifecycleOwner, Observer {it ->
             booklist = it
-            recyclerView.adapter = BookAdapter(requireContext(), booklist, ocl) // pass booklist and ocl to adapter
+            recyclerView.adapter = BookAdapter(requireContext(), it, ocl) // pass booklist and ocl to adapter
         })
     }
 

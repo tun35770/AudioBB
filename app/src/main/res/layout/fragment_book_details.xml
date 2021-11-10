@@ -11,7 +11,6 @@
         android:layout_width="408dp"
         android:layout_height="43dp"
         android:layout_marginTop="4dp"
-        android:text="AUTHOR TEXT"
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -26,7 +25,6 @@
         android:layout_width="412dp"
         android:layout_height="59dp"
         android:layout_marginTop="212dp"
-        android:text="TITLE OF BOOK"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold|italic"
@@ -40,9 +38,9 @@
         android:id="@+id/detailsImageView"
         android:layout_width="271dp"
         android:layout_height="207dp"
+        app:layout_constraintBottom_toTopOf="@+id/detailsTitleTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="5dp"
         tools:src="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package edu.temple.audiobb
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ class BookListViewModel: ViewModel() {
     }
 
     fun getBookList(): LiveData<BookList> {
+        Log.d("BOOKLIST", bookList.value?.size().toString())
         return bookList
     }
 

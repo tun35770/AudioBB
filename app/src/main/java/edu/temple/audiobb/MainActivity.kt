@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
@@ -32,7 +34,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
         twoPane = findViewById<View>(R.id.container2) != null
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
         bookListViewModel = ViewModelProvider(this).get(BookListViewModel::class.java)  //updating booklist to match user search results
-        bookListViewModel.setBookList(bookList)
+        //bookListViewModel.setBookList(bookList)
 
         // Pop DisplayFragment from stack if book was previously selected,
         // but user has since cleared selection
@@ -69,15 +71,8 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
                 .commit()
         }
 
-        /*val booklistFragment = BookListFragment.newInstance(booklist)
-        val bookdetailsFragment = BookDetailsFragment()
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.container1, booklistFragment)
-            .add(R.id.container2, bookdetailsFragment)
-            .commit()*/
-
     }
+
 
     override fun selectionMade() {
         if(!twoPane)
