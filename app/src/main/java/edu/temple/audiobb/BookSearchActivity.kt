@@ -62,7 +62,8 @@ class BookSearchActivity : AppCompatActivity() {
                             val b = Book(responseObject.getString("title")
                             , responseObject.getString("author")
                             , responseObject.getInt("id")
-                            , responseObject.getString("cover_url"))
+                            , responseObject.getString("cover_url")
+                            , responseObject.getInt("duration"))
 
                             bookList.add(b)    //add book to bookList
                         }
