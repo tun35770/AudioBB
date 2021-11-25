@@ -9,10 +9,11 @@
         <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout-long/activity_main.xml" value="0.6759868421052632" />
         <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout/activity_book_search.xml" value="0.2717391304347826" />
-        <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout/booklist_recycler_element.xml" value="0.25" />
         <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout/fragment_book_details.xml" value="0.25" />
         <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout/fragment_book_list.xml" value="0.3066123188405797" />
+        <entry key="..\:/Users/ryanm/AndroidStudioProjects/AudioBB/app/src/main/res/layout/fragment_control.xml" value="0.24918300653594772" />
       </map>
     </option>
   </component>
