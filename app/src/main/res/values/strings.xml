@@ -2,6 +2,8 @@
     <string name="app_name">AudioBB</string>
     <string name="searchEditText_Default">Enter Book Title...</string>
     <string name="searchButton_Default">Search</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--<string-array name="Book_Titles">
         <item>Ulysses</item>
         <item>Don Quixote</item>
