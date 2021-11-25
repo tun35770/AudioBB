@@ -8,16 +8,16 @@
 
     <Button
         android:id="@+id/ControlFragment_PlayButton"
-        android:layout_width="130dp"
-        android:layout_height="65dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/ControlFragment_PlayButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/ControlFragment_PauseButton"
-        android:layout_width="130dp"
-        android:layout_height="65dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/ControlFragment_PauseButton"
         app:layout_constraintEnd_toStartOf="@+id/ControlFragment_StopButton"
         app:layout_constraintStart_toEndOf="@+id/ControlFragment_PlayButton"
@@ -25,8 +25,8 @@
 
     <Button
         android:id="@+id/ControlFragment_StopButton"
-        android:layout_width="130dp"
-        android:layout_height="65dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/ControlFragment_StopButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

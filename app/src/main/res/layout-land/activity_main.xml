@@ -7,10 +7,9 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container1"
-
         android:layout_width="369dp"
-        android:layout_height="391dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ControlContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,13 +18,22 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container2"
-        android:layout_width="372dp"
-        android:layout_height="391dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mainSearchButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/ControlContainer"
+        android:name="edu.temple.audiobb.ControlFragment"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mainSearchButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/mainSearchButton"
