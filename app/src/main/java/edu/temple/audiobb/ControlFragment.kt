@@ -5,11 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import android.widget.Button
+import android.widget.SeekBar
 
 /**
  * A simple [Fragment] subclass.
@@ -17,15 +14,15 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ControlFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var playButton: Button
+    private lateinit var pauseButton: Button
+    private lateinit var stopButton: Button
+    private lateinit var seekBar: SeekBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -34,8 +31,15 @@ class ControlFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_control, container, false)
+        var layout = inflater.inflate(R.layout.fragment_control, container, false)
+        playButton = layout.findViewById(R.id.ControlFragment_PlayButton)
+        pauseButton = layout.findViewById(R.id.ControlFragment_PauseButton)
+        stopButton = layout.findViewById(R.id.ControlFragment_StopButton)
+        seekBar = layout.findViewById<SeekBar>(R.id.ControlFragment_SeekBar)
+
+        return layout;
     }
+
 
     companion object {
         /**
@@ -51,8 +55,6 @@ class ControlFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             ControlFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }
