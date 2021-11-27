@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        bindService(Intent(this, PlayerService::class.java)
+        , serviceConnection
+        , BIND_AUTO_CREATE)
+
         //launch search activity
         val searchButton = findViewById<Button>(R.id.mainSearchButton)
         searchButton.setOnClickListener {
