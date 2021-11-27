@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SeekBar
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
@@ -25,10 +26,12 @@ class ControlFragment : Fragment() {
     private lateinit var pauseButton: Button
     private lateinit var stopButton: Button
     private lateinit var seekBar: SeekBar
+    private lateinit var textView: TextView
     private lateinit var bookProgress: PlayerService.BookProgress
 
     lateinit var book: Book
     lateinit var bookViewModel: BookViewModel
+    lateinit var bookProgressViewModel: BookProgressViewModel
 
     var running = false
 
@@ -48,6 +51,7 @@ class ControlFragment : Fragment() {
         pauseButton = layout.findViewById(R.id.ControlFragment_PauseButton)
         stopButton = layout.findViewById(R.id.ControlFragment_StopButton)
         seekBar = layout.findViewById<SeekBar>(R.id.ControlFragment_SeekBar)
+        textView = layout.findViewById(R.id.ControlFragment_TextView)
 
         return layout;
     }
@@ -57,6 +61,7 @@ class ControlFragment : Fragment() {
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             book = it
+            textView.text = "Now Playing: ${book.title}"
             seekBar.max = (book.duration)
             playButton.setOnClickListener {
                 (requireActivity() as ControlInterface).onPlayPressed()
@@ -102,6 +107,14 @@ class ControlFragment : Fragment() {
             })
         })
 
+        bookProgressViewModel = ViewModelProvider(requireActivity()).get(BookProgressViewModel::class.java)
+        bookProgressViewModel.getBookProgress().observe(viewLifecycleOwner, Observer{it ->
+            bookProgress = it
+        })
+        bookProgressViewModel.getI().observe(viewLifecycleOwner, Observer{it ->
+            if(savedInstanceState != null && it == 1)
+                resumeAudio()
+        })
 
     }
     companion object {
@@ -147,5 +160,17 @@ class ControlFragment : Fragment() {
         super.onDestroy()
 
         running = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    fun resumeAudio(){
+        if(!bookViewModel.getBook().value?.title.isNullOrBlank()){
+            (requireActivity() as ControlInterface).onPlayPressed()
+            (requireActivity() as ControlInterface).jumpTo(bookProgress.progress)
+            running = true
+        }
     }
 }

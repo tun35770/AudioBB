@@ -25,13 +25,16 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     var twoPane = false
     lateinit var bookViewModel: BookViewModel
     lateinit var bookListViewModel: BookListViewModel
+    lateinit var bookProgressViewModel: BookProgressViewModel
     lateinit var book: Book
     var bookList: BookList = BookList()
 
     lateinit var bookProgress: PlayerService.BookProgress
     val progressHandler = Handler(Looper.getMainLooper()) {
-        if(it.obj != null)
+        if(it.obj != null) {
             bookProgress = it.obj as PlayerService.BookProgress   //BookProgress object
+            bookProgressViewModel.setI(1)
+        }
         true
     }
 
@@ -46,8 +49,6 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
             isConnected = false
         }
     }
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +71,9 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
         twoPane = findViewById<View>(R.id.container2) != null
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
         bookListViewModel = ViewModelProvider(this).get(BookListViewModel::class.java)  //updating booklist to match user search results
+        bookProgressViewModel = ViewModelProvider(this).get(BookProgressViewModel::class.java)
+
+        bookProgressViewModel.setI(0);
 
         //get the selected book
         bookViewModel.getBook().observe(this, Observer { it ->
@@ -112,7 +116,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
         }
 
         //create ControlFragment if it does not yet exist
-        if(!(supportFragmentManager.findFragmentById(R.id.ControlContainer) is ControlFragment))
+        if(savedInstanceState == null)
         supportFragmentManager.beginTransaction()
             .add(R.id.ControlContainer, ControlFragment())
             .commit()
@@ -156,12 +160,15 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
 
     override fun onDestroy() {
         super.onDestroy()
+        bookProgressViewModel.setBookProgress(bookProgress)
         unbindService(serviceConnection)
     }
 
     override fun onPlayPressed() {
-        if(!bookViewModel.getBook().value?.title.isNullOrBlank())
-        mediaControlBinder.play(book.id)    //play book
+        if(!bookViewModel.getBook().value?.title.isNullOrBlank()) {
+            while(!this::mediaControlBinder.isInitialized);
+            mediaControlBinder.play(book.id)    //play book
+        }
     }
 
     override fun onPausePressed() {
