@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     val progressHandler = Handler(Looper.getMainLooper()) {
         if(it.obj != null) {
             bookProgress = it.obj as PlayerService.BookProgress   //BookProgress object
-            bookProgressViewModel.setI(1)
         }
         true
     }
@@ -72,8 +71,6 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
         bookListViewModel = ViewModelProvider(this).get(BookListViewModel::class.java)  //updating booklist to match user search results
         bookProgressViewModel = ViewModelProvider(this).get(BookProgressViewModel::class.java)
-
-        bookProgressViewModel.setI(0);
 
         //get the selected book
         bookViewModel.getBook().observe(this, Observer { it ->
@@ -166,7 +163,6 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
 
     override fun onPlayPressed() {
         if(!bookViewModel.getBook().value?.title.isNullOrBlank()) {
-            while(!this::mediaControlBinder.isInitialized);
             mediaControlBinder.play(book.id)    //play book
         }
     }
@@ -189,5 +185,9 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
 
     override fun jumpTo(position: Int){
         mediaControlBinder.seekTo(position)
+    }
+
+    override fun isServiceConnected(): Boolean {
+        return isConnected
     }
 }

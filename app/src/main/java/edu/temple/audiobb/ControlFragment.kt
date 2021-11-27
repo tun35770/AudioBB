@@ -111,10 +111,7 @@ class ControlFragment : Fragment() {
         bookProgressViewModel.getBookProgress().observe(viewLifecycleOwner, Observer{it ->
             bookProgress = it
         })
-        bookProgressViewModel.getI().observe(viewLifecycleOwner, Observer{it ->
-            if(savedInstanceState != null && it == 1)
-                resumeAudio()
-        })
+
 
     }
     companion object {
@@ -154,6 +151,7 @@ class ControlFragment : Fragment() {
         fun getProgress(): PlayerService.BookProgress
         fun isPlaying(): Boolean
         fun jumpTo(position: Int)
+        fun isServiceConnected(): Boolean
     }
 
     override fun onDestroy() {
@@ -167,10 +165,12 @@ class ControlFragment : Fragment() {
     }
 
     fun resumeAudio(){
+        Log.d("TEST1", "TEST)")
         if(!bookViewModel.getBook().value?.title.isNullOrBlank()){
-            (requireActivity() as ControlInterface).onPlayPressed()
-            (requireActivity() as ControlInterface).jumpTo(bookProgress.progress)
-            running = true
+           // (requireActivity() as ControlInterface).onPlayPressed()
+            //(requireActivity() as ControlInterface).jumpTo(bookProgress.progress)
+            //running = true
         }
+        Log.d("TEST2", "TEST)")
     }
 }
