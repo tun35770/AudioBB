@@ -58,50 +58,49 @@ class ControlFragment : Fragment() {
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             book = it
             seekBar.max = (book.duration)
-        })
-
-
-        playButton.setOnClickListener {
-            (requireActivity() as ControlInterface).onPlayPressed()
-            running = true
-            t.start()
-        }
-
-        pauseButton.setOnClickListener {
-
-            if((requireActivity() as ControlInterface).isPlaying()) {
-                running = false //stop thread
-                pauseButton.setText("Resume")
+            playButton.setOnClickListener {
+                (requireActivity() as ControlInterface).onPlayPressed()
+                running = true
+                t.start()
             }
-            else {
-                running = true  //start thread
+
+            pauseButton.setOnClickListener {
+
+                if((requireActivity() as ControlInterface).isPlaying()) {
+                    running = false //stop thread
+                    pauseButton.setText("Resume")
+                }
+                else {
+                    running = true  //start thread
+                    pauseButton.setText("Pause")
+                }
+
+                (requireActivity() as ControlInterface).onPausePressed()
+            }
+
+            stopButton.setOnClickListener {
+                (requireActivity() as ControlInterface).onStopPressed()
+                running = false
                 pauseButton.setText("Pause")
             }
 
-            (requireActivity() as ControlInterface).onPausePressed()
-        }
+            seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+                override fun onProgressChanged(seek: SeekBar?, progress: Int, fromUser: Boolean) {
+                    if(book != null && fromUser)
+                        (requireActivity() as ControlInterface).jumpTo(progress)
+                }
 
-        stopButton.setOnClickListener {
-            (requireActivity() as ControlInterface).onStopPressed()
-            running = false
-            pauseButton.setText("Pause")
-        }
+                override fun onStartTrackingTouch(p0: SeekBar?) {
+                    running = false
+                }
 
-        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(seek: SeekBar?, progress: Int, fromUser: Boolean) {
-                if(book != null && fromUser)
-                    (requireActivity() as ControlInterface).jumpTo(progress)
-            }
-
-            override fun onStartTrackingTouch(p0: SeekBar?) {
-                running = false
-            }
-
-            override fun onStopTrackingTouch(p0: SeekBar?) {
-                Log.d("New Progress", seekBar.progress.toString())
-                running = true
-            }
+                override fun onStopTrackingTouch(p0: SeekBar?) {
+                    Log.d("New Progress", seekBar.progress.toString())
+                    running = true
+                }
+            })
         })
+
 
     }
     companion object {
