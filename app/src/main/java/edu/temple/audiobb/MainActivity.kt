@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     }
 
     override fun getProgress(): PlayerService.BookProgress{
-        return bookProgress
+            return bookProgress
     }
 
     override fun isPlaying(): Boolean{
