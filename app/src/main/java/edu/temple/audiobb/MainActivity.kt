@@ -111,6 +111,11 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
                 .commit()
         }
 
+        //create ControlFragment if it does not yet exist
+        if(!(supportFragmentManager.findFragmentById(R.id.ControlContainer) is ControlFragment))
+        supportFragmentManager.beginTransaction()
+            .add(R.id.ControlContainer, ControlFragment())
+            .commit()
     }
 
 

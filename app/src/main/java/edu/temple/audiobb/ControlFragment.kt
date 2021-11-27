@@ -92,12 +92,12 @@ class ControlFragment : Fragment() {
                 }
 
                 override fun onStartTrackingTouch(p0: SeekBar?) {
-                    running = false
+
                 }
 
                 override fun onStopTrackingTouch(p0: SeekBar?) {
                     Log.d("New Progress", seekBar.progress.toString())
-                    running = true
+
                 }
             })
         })
@@ -141,5 +141,11 @@ class ControlFragment : Fragment() {
         fun getProgress(): PlayerService.BookProgress
         fun isPlaying(): Boolean
         fun jumpTo(position: Int)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        running = false
     }
 }
