@@ -30,6 +30,8 @@ class ControlFragment : Fragment() {
     lateinit var book: Book
     lateinit var bookViewModel: BookViewModel
 
+    var running = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -61,32 +63,45 @@ class ControlFragment : Fragment() {
 
         playButton.setOnClickListener {
             (requireActivity() as ControlInterface).onPlayPressed()
-           // while(!(requireActivity() as ControlInterface).isPlaying()) ;
-            Log.d("SUCCESS", "SUCCESS")
-            //bookProgress = (requireActivity() as ControlInterface).getProgress()
+            running = true
             t.start()
-
         }
 
         pauseButton.setOnClickListener {
 
             if((requireActivity() as ControlInterface).isPlaying()) {
+                running = false //stop thread
                 pauseButton.setText("Resume")
-                //seekBar.setProgress(bookProgress.progress)
-                //Log.d("PROGRESS", bookProgress.progress.toString())
             }
-            else
+            else {
+                running = true  //start thread
                 pauseButton.setText("Pause")
+            }
 
             (requireActivity() as ControlInterface).onPausePressed()
         }
 
         stopButton.setOnClickListener {
             (requireActivity() as ControlInterface).onStopPressed()
+            running = false
             pauseButton.setText("Pause")
         }
 
-        //seekBar.progress = bookProgress.progress
+        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seek: SeekBar?, progress: Int, fromUser: Boolean) {
+                if(book != null && fromUser)
+                    (requireActivity() as ControlInterface).jumpTo(progress)
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+                running = false
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                Log.d("New Progress", seekBar.progress.toString())
+                running = true
+            }
+        })
 
     }
     companion object {
@@ -109,13 +124,14 @@ class ControlFragment : Fragment() {
 
     val t = Thread(Runnable{
         Thread.sleep(3000)
-        while(true){
+        while(running){
             bookProgress = (requireActivity() as ControlInterface).getProgress()
             seekBar.setProgress(bookProgress.progress)
             Log.d("Progress", bookProgress.progress.toString())
             Thread.sleep(1000)
-        }
 
+            while(!running) ;
+        }
     })
 
     interface ControlInterface{
@@ -124,5 +140,6 @@ class ControlFragment : Fragment() {
         fun onStopPressed()
         fun getProgress(): PlayerService.BookProgress
         fun isPlaying(): Boolean
+        fun jumpTo(position: Int)
     }
 }

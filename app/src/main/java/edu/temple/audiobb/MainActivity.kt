@@ -174,4 +174,8 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     override fun isPlaying(): Boolean{
         return mediaControlBinder.isPlaying
     }
+
+    override fun jumpTo(position: Int){
+        mediaControlBinder.seekTo(position)
+    }
 }
