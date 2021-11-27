@@ -40,7 +40,13 @@ class ControlFragment : Fragment() {
         return layout;
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        playButton.setOnClickListener {  }
+        pauseButton.setOnClickListener {  }
+        stopButton.setOnClickListener {  }
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

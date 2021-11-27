@@ -1,22 +1,41 @@
 package edu.temple.audiobb
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import edu.temple.audlibplayer.PlayerService
 
 class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
+
+    var isConnected = false
+    lateinit var mediaControlBinder : PlayerService.MediaControlBinder
 
     var twoPane = false
     lateinit var bookViewModel: BookViewModel
     lateinit var bookListViewModel: BookListViewModel
     var bookList: BookList = BookList()
+
+    val serviceConnection = object: ServiceConnection{
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            isConnected = true
+            mediaControlBinder = service as PlayerService.MediaControlBinder
+
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isConnected = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
