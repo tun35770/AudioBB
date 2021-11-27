@@ -1,6 +1,7 @@
 package edu.temple.audiobb
 
 import android.os.Bundle
+import android.service.controls.Control
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import android.widget.SeekBar
  */
 class ControlFragment : Fragment() {
 
+    private var isPlaying = false;
     private lateinit var playButton: Button
     private lateinit var pauseButton: Button
     private lateinit var stopButton: Button
@@ -43,9 +45,21 @@ class ControlFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        playButton.setOnClickListener {  }
-        pauseButton.setOnClickListener {  }
-        stopButton.setOnClickListener {  }
+        playButton.setOnClickListener { (requireActivity() as ControlInterface).onPlayPressed() }
+        pauseButton.setOnClickListener {
+            (requireActivity() as ControlInterface).onPausePressed()
+            if(isPlaying)
+                pauseButton.setText("Pause")
+            else
+                pauseButton.setText("Resume")
+
+            isPlaying = !isPlaying
+        }
+
+        stopButton.setOnClickListener {
+            (requireActivity() as ControlInterface).onStopPressed()
+            pauseButton.setText("Pause")
+        }
     }
     companion object {
         /**
@@ -63,5 +77,11 @@ class ControlFragment : Fragment() {
                 arguments = Bundle().apply {
                 }
             }
+    }
+
+    interface ControlInterface{
+        fun onPlayPressed()
+        fun onPausePressed()
+        fun onStopPressed()
     }
 }

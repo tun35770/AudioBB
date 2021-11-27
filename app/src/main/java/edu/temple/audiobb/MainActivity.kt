@@ -7,15 +7,17 @@ import android.content.ServiceConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.service.controls.Control
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.squareup.picasso.Picasso
 import edu.temple.audlibplayer.PlayerService
 
-class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
+class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, ControlFragment.ControlInterface {
 
     var isConnected = false
     lateinit var mediaControlBinder : PlayerService.MediaControlBinder
@@ -23,13 +25,13 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
     var twoPane = false
     lateinit var bookViewModel: BookViewModel
     lateinit var bookListViewModel: BookListViewModel
+    lateinit var book: Book
     var bookList: BookList = BookList()
 
     val serviceConnection = object: ServiceConnection{
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             isConnected = true
             mediaControlBinder = service as PlayerService.MediaControlBinder
-
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -57,6 +59,11 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
         twoPane = findViewById<View>(R.id.container2) != null
         bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
         bookListViewModel = ViewModelProvider(this).get(BookListViewModel::class.java)  //updating booklist to match user search results
+
+        //get the selected book
+        bookViewModel.getBook().observe(this, Observer { it ->
+            book = it
+        })
 
         // Pop DisplayFragment from stack if book was previously selected,
         // but user has since cleared selection
@@ -129,5 +136,22 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindService(serviceConnection)
+    }
+
+    override fun onPlayPressed() {
+        mediaControlBinder.play(book.id)    //play book
+    }
+
+    override fun onPausePressed() {
+        mediaControlBinder.pause()  //pause book
+    }
+
+    override fun onStopPressed() {
+        mediaControlBinder.stop()   //stop book
     }
 }
