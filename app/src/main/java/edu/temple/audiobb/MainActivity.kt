@@ -4,9 +4,8 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.IBinder
 import android.service.controls.Control
 import android.util.Log
 import android.view.View
@@ -16,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import edu.temple.audlibplayer.PlayerService
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, ControlFragment.ControlInterface {
 
@@ -28,16 +28,27 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     lateinit var book: Book
     var bookList: BookList = BookList()
 
+    lateinit var bookProgress: PlayerService.BookProgress
+    val progressHandler = Handler(Looper.getMainLooper()) {
+        if(it.obj != null)
+            bookProgress = it.obj as PlayerService.BookProgress   //BookProgress object
+        true
+    }
+
     val serviceConnection = object: ServiceConnection{
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             isConnected = true
             mediaControlBinder = service as PlayerService.MediaControlBinder
+            mediaControlBinder.setProgressHandler(progressHandler)
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
             isConnected = false
         }
     }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,6 +155,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     }
 
     override fun onPlayPressed() {
+        if(!bookViewModel.getBook().value?.title.isNullOrBlank())
         mediaControlBinder.play(book.id)    //play book
     }
 
@@ -153,5 +165,13 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
 
     override fun onStopPressed() {
         mediaControlBinder.stop()   //stop book
+    }
+
+    override fun getProgress(): PlayerService.BookProgress{
+        return bookProgress
+    }
+
+    override fun isPlaying(): Boolean{
+        return mediaControlBinder.isPlaying
     }
 }

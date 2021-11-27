@@ -2,12 +2,14 @@ package edu.temple.audiobb
 
 import android.os.Bundle
 import android.service.controls.Control
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SeekBar
+import edu.temple.audlibplayer.PlayerService
 
 /**
  * A simple [Fragment] subclass.
@@ -16,11 +18,11 @@ import android.widget.SeekBar
  */
 class ControlFragment : Fragment() {
 
-    private var isPlaying = false;
     private lateinit var playButton: Button
     private lateinit var pauseButton: Button
     private lateinit var stopButton: Button
     private lateinit var seekBar: SeekBar
+    private lateinit var bookProgress: PlayerService.BookProgress
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,21 +47,34 @@ class ControlFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        playButton.setOnClickListener { (requireActivity() as ControlInterface).onPlayPressed() }
-        pauseButton.setOnClickListener {
-            (requireActivity() as ControlInterface).onPausePressed()
-            if(isPlaying)
-                pauseButton.setText("Pause")
-            else
-                pauseButton.setText("Resume")
+        playButton.setOnClickListener {
+            (requireActivity() as ControlInterface).onPlayPressed()
+        }
 
-            isPlaying = !isPlaying
+        pauseButton.setOnClickListener {
+
+
+            if((requireActivity() as ControlInterface).isPlaying()) {
+                pauseButton.setText("Resume")
+                bookProgress = (requireActivity() as ControlInterface).getProgress()
+                seekBar.setProgress(bookProgress.progress)
+                Log.d("PROGRESS", bookProgress.progress.toString())
+            }
+            else
+                pauseButton.setText("Pause")
+
+            (requireActivity() as ControlInterface).onPausePressed()
         }
 
         stopButton.setOnClickListener {
             (requireActivity() as ControlInterface).onStopPressed()
             pauseButton.setText("Pause")
         }
+
+
+
+        //seekBar.progress = bookProgress.progress
+
     }
     companion object {
         /**
@@ -83,5 +98,7 @@ class ControlFragment : Fragment() {
         fun onPlayPressed()
         fun onPausePressed()
         fun onStopPressed()
+        fun getProgress(): PlayerService.BookProgress
+        fun isPlaying(): Boolean
     }
 }
