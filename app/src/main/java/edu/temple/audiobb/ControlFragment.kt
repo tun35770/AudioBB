@@ -61,7 +61,8 @@ class ControlFragment : Fragment() {
             playButton.setOnClickListener {
                 (requireActivity() as ControlInterface).onPlayPressed()
                 running = true
-                t.start()
+                if(!t.isAlive)
+                    t.start()
             }
 
             pauseButton.setOnClickListener {
@@ -129,7 +130,7 @@ class ControlFragment : Fragment() {
             Log.d("Progress", bookProgress.progress.toString())
             Thread.sleep(1000)
 
-            while(!running) ;
+            while(!running);
         }
     })
 
