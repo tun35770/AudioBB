@@ -147,13 +147,13 @@ class ControlFragment : Fragment() {
     })
 
     interface ControlInterface{
-        fun onPlayPressed()
-        fun onPausePressed()
-        fun onStopPressed()
-        fun getProgress(): PlayerService.BookProgress
-        fun isPlaying(): Boolean
-        fun jumpTo(position: Int)
-        fun isServiceConnected(): Boolean
+        fun onPlayPressed() //play button
+        fun onPausePressed()    //pause button
+        fun onStopPressed() //stop button
+        fun getProgress(): PlayerService.BookProgress   //BookProgress object
+        fun isPlaying(): Boolean    //check if audio is playing
+        fun jumpTo(position: Int)   //seekTo
+        fun isServiceConnected(): Boolean   //check if service is connected
     }
 
     override fun onDestroy() {
@@ -165,8 +165,11 @@ class ControlFragment : Fragment() {
         super.onResume()
         running = true
 
-        if(this::book.isInitialized && !t.isAlive)
-            t.start()
+        if(this::book.isInitialized)  {
+            textView.text = "Now Playing: ${book.title}"
+            if(!t.isAlive)  //restart thread after configuration change
+                t.start()
+        }
     }
 
 }
