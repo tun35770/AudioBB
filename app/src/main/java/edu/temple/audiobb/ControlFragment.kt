@@ -61,10 +61,10 @@ class ControlFragment : Fragment() {
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             book = it
-            textView.text = "Now Playing: ${book.title}"
             seekBar.max = (book.duration)
             playButton.setOnClickListener {
                 (requireActivity() as ControlInterface).onPlayPressed()
+                textView.text = "Now Playing: ${book.title}"
                 running = true
                 if(!t.isAlive)
                     t.start()
@@ -86,6 +86,7 @@ class ControlFragment : Fragment() {
 
             stopButton.setOnClickListener {
                 (requireActivity() as ControlInterface).onStopPressed()
+                textView.text = ""
                 running = false
                 pauseButton.setText("Pause")
             }
@@ -93,7 +94,8 @@ class ControlFragment : Fragment() {
             seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(seek: SeekBar?, progress: Int, fromUser: Boolean) {
                     if(book != null && fromUser)
-                        (requireActivity() as ControlInterface).jumpTo(progress)
+                        (requireActivity() as ControlInterface).jumpTo((progress))
+                    Log.d("Progress:::", progress.toString())
                 }
 
                 override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -101,7 +103,7 @@ class ControlFragment : Fragment() {
                 }
 
                 override fun onStopTrackingTouch(p0: SeekBar?) {
-                    Log.d("New Progress", seekBar.progress.toString())
+                    Log.d("New Progress", (seekBar.progress.toString()))
 
                 }
             })
