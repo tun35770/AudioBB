@@ -28,10 +28,12 @@ class ControlFragment : Fragment() {
     private lateinit var seekBar: SeekBar
     private lateinit var textView: TextView
     private lateinit var bookProgress: PlayerService.BookProgress
+    private lateinit var playingBook: Book
 
     lateinit var book: Book
     lateinit var bookViewModel: BookViewModel
     lateinit var bookProgressViewModel: BookProgressViewModel
+    lateinit var bookPlayingViewModel: BookPlayingViewModel
 
     var running = false
 
@@ -61,22 +63,25 @@ class ControlFragment : Fragment() {
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             book = it
-            seekBar.max = (book.duration)
+
             playButton.setOnClickListener {
                 (requireActivity() as ControlInterface).onPlayPressed()
                 textView.text = "Now Playing: ${book.title}"
                 running = true
                 if(!t.isAlive)
                     t.start()
+
+                seekBar.max = (book.duration)   //set seekbar's length
+                bookPlayingViewModel.setCurrentBook(book)
             }
 
             pauseButton.setOnClickListener {
 
-                if((requireActivity() as ControlInterface).isPlaying()) {
+                if((requireActivity() as ControlInterface).isPlaying()) {   //if currently playing
                     running = false //stop thread
                     pauseButton.setText("Resume")
                 }
-                else {
+                else {  //if currently paused
                     running = true  //start thread
                     pauseButton.setText("Pause")
                 }
@@ -114,6 +119,10 @@ class ControlFragment : Fragment() {
             bookProgress = it
         })
 
+        bookPlayingViewModel = ViewModelProvider(requireActivity()).get(BookPlayingViewModel::class.java)
+        bookPlayingViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
+            playingBook = it
+        })
 
     }
     companion object {
@@ -166,7 +175,8 @@ class ControlFragment : Fragment() {
         running = true
 
         if(this::book.isInitialized)  {
-            textView.text = "Now Playing: ${book.title}"
+            textView.text = "Now Playing: ${playingBook.title}"
+            seekBar.max = (playingBook.duration)
             if(!t.isAlive)  //restart thread after configuration change
                 t.start()
         }
