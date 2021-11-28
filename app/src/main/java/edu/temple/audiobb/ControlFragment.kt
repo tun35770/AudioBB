@@ -177,11 +177,9 @@ class ControlFragment : Fragment() {
         if(this::playingBook.isInitialized && !t.isAlive)  //restart thread after configuration change
                 t.start()
 
-
         if(this::playingBook.isInitialized) {
             textView.text = "Now Playing: ${playingBook.title}"
             seekBar.max = (playingBook.duration)
         }
     }
-
 }
