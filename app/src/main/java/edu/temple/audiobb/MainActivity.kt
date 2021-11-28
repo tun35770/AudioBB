@@ -146,9 +146,6 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
                     val newBookList = data.getParcelableExtra<BookList>("list")!!   //get bookList
-                    /*for (i in 0 until newBookList.size()) {
-                        Log.d("Result", newBookList.get(i).title!!)
-                    }*/
                     bookListViewModel.setBookList(newBookList)  //set bookList to result from user search
                 }
             }
@@ -159,7 +156,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
         super.onDestroy()
         if(this::bookProgress.isInitialized)
             bookProgressViewModel.setBookProgress(bookProgress)
-        unbindService(serviceConnection)
+        //unbindService(serviceConnection)
     }
 
     override fun onPlayPressed() {

@@ -158,21 +158,15 @@ class ControlFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-
         running = false
     }
 
     override fun onResume() {
         super.onResume()
+        running = true
+
+        if(this::book.isInitialized && !t.isAlive)
+            t.start()
     }
 
-    fun resumeAudio(){
-        Log.d("TEST1", "TEST)")
-        if(!bookViewModel.getBook().value?.title.isNullOrBlank()){
-           // (requireActivity() as ControlInterface).onPlayPressed()
-            //(requireActivity() as ControlInterface).jumpTo(bookProgress.progress)
-            //running = true
-        }
-        Log.d("TEST2", "TEST)")
-    }
 }
