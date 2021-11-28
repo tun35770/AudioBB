@@ -114,36 +114,21 @@ class ControlFragment : Fragment() {
             })
         })
 
+        //get bookprogress object
         bookProgressViewModel = ViewModelProvider(requireActivity()).get(BookProgressViewModel::class.java)
         bookProgressViewModel.getBookProgress().observe(viewLifecycleOwner, Observer{it ->
             bookProgress = it
         })
 
+        //get the current playing book
         bookPlayingViewModel = ViewModelProvider(requireActivity()).get(BookPlayingViewModel::class.java)
         bookPlayingViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             playingBook = it
         })
 
     }
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ControlFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ControlFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
-    }
 
-    val t = Thread(Runnable{
+    val t = Thread(Runnable{    //Thread for seekbar updates
         Thread.sleep(3000)
         while(running){
             bookProgress = (requireActivity() as ControlInterface).getProgress()
@@ -177,7 +162,7 @@ class ControlFragment : Fragment() {
         if(this::playingBook.isInitialized && !t.isAlive)  //restart thread after configuration change
                 t.start()
 
-        if(this::playingBook.isInitialized) {
+        if(this::playingBook.isInitialized) {   //reinitialize some values after configuration change
             textView.text = "Now Playing: ${playingBook.title}"
             seekBar.max = (playingBook.duration)
         }

@@ -159,6 +159,9 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
         //unbindService(serviceConnection)
     }
 
+
+    /* ControlFragment Interface functions */
+
     override fun onPlayPressed() {
         if(!bookViewModel.getBook().value?.title.isNullOrBlank()) {
             mediaControlBinder.play(book.id)    //play book
