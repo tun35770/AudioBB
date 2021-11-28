@@ -29,8 +29,8 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/ControlContainer"
 
-        android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_width="367dp"
+        android:layout_height="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/mainSearchButton"
         app:layout_constraintStart_toStartOf="parent" />

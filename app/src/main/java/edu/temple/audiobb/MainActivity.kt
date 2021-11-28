@@ -157,7 +157,8 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
 
     override fun onDestroy() {
         super.onDestroy()
-        bookProgressViewModel.setBookProgress(bookProgress)
+        if(this::bookProgress.isInitialized)
+            bookProgressViewModel.setBookProgress(bookProgress)
         unbindService(serviceConnection)
     }
 
