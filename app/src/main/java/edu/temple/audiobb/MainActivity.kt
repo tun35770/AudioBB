@@ -79,11 +79,11 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
         val fileName = "list.txt"
         val file = File(filesDir, fileName)
 
+        //if a booklist has been saved to file
         if(file.exists()){
             var bookListFromFile = BookList()
             FileInputStream(file).bufferedReader().use{
                 var title = it.readLine()
-
 
                 while(title != null){
                     Log.d("TITLE", title)
@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
                 }
             }
 
+            //set the booklist viewmodel
            bookListViewModel.setBookList(bookListFromFile)
         }
 

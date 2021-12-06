@@ -12,6 +12,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -43,6 +44,7 @@ class ControlFragment : Fragment() {
     lateinit var bookViewModel: BookViewModel
     lateinit var bookProgressViewModel: BookProgressViewModel
     lateinit var bookPlayingViewModel: BookPlayingViewModel
+    lateinit var isPlayingViewModel: IsPlayingViewModel
 
     var running = false
 
@@ -72,6 +74,13 @@ class ControlFragment : Fragment() {
 
         //preferences for saving book progresses
         var sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        isPlayingViewModel = ViewModelProvider(requireActivity()).get(IsPlayingViewModel::class.java)
+        isPlayingViewModel.getIsPlaying().observe(viewLifecycleOwner, Observer{it ->
+            if(it)
+                pauseButton.text = "Pause"
+            else
+                pauseButton.text = "Resume"
+        })
 
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
@@ -102,9 +111,8 @@ class ControlFragment : Fragment() {
 
                 textView.text = "Now Playing: ${playingBook.title}"
                 running = true
-                if(!t.isAlive)
-                    t.start()
 
+                isPlayingViewModel.setIsPlaying((true))
                 seekBar.max = (book.duration)   //set seekbar's length
             }
 
@@ -112,13 +120,13 @@ class ControlFragment : Fragment() {
 
                 if((requireActivity() as ControlInterface).isPlaying()) {   //if currently playing
                     running = false //stop thread
-                    pauseButton.setText("Resume")
+                    isPlayingViewModel.setIsPlaying(false)
                     //save progress
                     sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", bookProgress.progress)?.apply()
                 }
                 else {  //if currently paused
                     running = true  //start thread
-                    pauseButton.setText("Pause")
+                    isPlayingViewModel.setIsPlaying(true)
                 }
 
                 (requireActivity() as ControlInterface).onPausePressed()
@@ -128,8 +136,9 @@ class ControlFragment : Fragment() {
                 (requireActivity() as ControlInterface).onStopPressed()
                 textView.text = ""
                 running = false
-                pauseButton.setText("Pause")
+                isPlayingViewModel.setIsPlaying(false)
                 sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", 0)?.apply()
+
             }
 
             seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
@@ -148,6 +157,10 @@ class ControlFragment : Fragment() {
 
                 }
             })
+
+            //start thread if it isnt already running
+            if(!t.isAlive)
+                t.start()
         })
 
         //get bookprogress object
@@ -170,8 +183,10 @@ class ControlFragment : Fragment() {
             if((requireActivity() as ControlInterface).bookProgressInitialized()) {
                 bookProgress = (requireActivity() as ControlInterface).getProgress()
                 seekBar.setProgress(bookProgress.progress)
+                Log.d("Progress", bookProgress.progress.toString())
+
             }
-            Log.d("Progress", bookProgress.progress.toString())
+
             Thread.sleep(1000)
 
             while(!running);
@@ -186,7 +201,7 @@ class ControlFragment : Fragment() {
         fun isPlaying(): Boolean    //check if audio is playing
         fun jumpTo(position: Int)   //seekTo
         fun isServiceConnected(): Boolean   //check if service is connected
-        fun bookProgressInitialized(): Boolean
+        fun bookProgressInitialized(): Boolean  //check if bookProgress has been initialized
     }
 
     override fun onDestroy() {
@@ -209,6 +224,7 @@ class ControlFragment : Fragment() {
 
     }
 
+    //download a book from server
     fun downloadBook(id: Int){
         val url = "https://kamorris.com/lab/audlib/download.php?id=${id}"
 

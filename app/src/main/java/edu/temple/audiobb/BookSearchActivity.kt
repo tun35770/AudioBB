@@ -68,6 +68,7 @@ class BookSearchActivity : AppCompatActivity() {
                         bookList.setEmpty()    //empty the current booklist
                         val resultIntent: Intent = Intent()
 
+                        //get each book from search
                         for(i in 0 until it.length()){  //get response of books
                             val responseObject = it.getJSONObject(i)
                             val b = Book(responseObject.getString("title")
@@ -78,15 +79,7 @@ class BookSearchActivity : AppCompatActivity() {
 
                             bookList.add(b)    //add book to bookList
 
-                            //write book info to list file
-                            /*file.bufferedWriter().use{
-                                out.println(b.title)
-                                out.println(b.author)
-                                out.println(b.id)
-                                out.println(b.coverURL)
-                                out.println(b.duration)
-                            }*/
-
+                            //writes book information to "list" file
                            FileWriter(file, true).use{
                                 it.append("${b.title}\n".toString())
                                 it.append("${b.author}\n".toString())
@@ -98,6 +91,7 @@ class BookSearchActivity : AppCompatActivity() {
 
                         }
 
+                        //return to main activity
                         resultIntent.putExtra("list", bookList)
                         setResult(Activity.RESULT_OK, resultIntent)
                         finish()    //back to main activity
