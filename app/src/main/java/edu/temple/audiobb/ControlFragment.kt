@@ -159,7 +159,7 @@ class ControlFragment : Fragment() {
             })
 
             //start thread if it isnt already running
-            if(!t.isAlive)
+            if(t.state == Thread.State.NEW)
                 t.start()
         })
 
@@ -212,9 +212,6 @@ class ControlFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         running = true
-
-        if(this::playingBook.isInitialized && !t.isAlive)  //restart thread after configuration change
-                t.start()
 
         if(this::playingBook.isInitialized) {   //reinitialize some values after configuration change
             textView.text = "Now Playing: ${playingBook.title}"
