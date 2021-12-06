@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     /* ControlFragment Interface functions */
 
     override fun onPlayPressed() {
-        val fileName = "book${book.id}.mp3"
+        val fileName = "book${book.id}"
         val file = File(fileName);
 
         //if a book is selected

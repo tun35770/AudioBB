@@ -82,8 +82,12 @@ class ControlFragment : Fragment() {
             playButton.setOnClickListener {
                 (requireActivity() as ControlInterface).onPlayPressed()
 
+                val fileName = "book${book.id}"
+                val file = File(fileName);
+
                 //if not already downloaded
-                val file = File(context?.filesDir, "book${book.id}")
+                if(!file.exists())
+                    downloadBook(book.id)
 
                 textView.text = "Now Playing: ${book.title}"
                 running = true
@@ -190,26 +194,25 @@ class ControlFragment : Fragment() {
     fun downloadBook(id: Int){
         val url = "https://kamorris.com/lab/audlib/download.php?id=${id}"
 
-        volleyQueue.add(
-            JsonArrayRequest(
-                Request.Method.GET
-                , url
-                , null
-                , {
-                    try{
-                        val outputStream: FileOutputStream
-                        val name = "book${id}.mp3"
-                        outputStream = requireContext().openFileOutput(name, Context.MODE_PRIVATE)
-                        outputStream.write(it.toJSONObject(it).toString().toByteArray())
-                    } catch(e : JSONException){
-                        e.printStackTrace()
-                    }
+        val newRequest = InputStreamVolleyRequest(
+            Request.Method.GET
+        , url
+        , {
+                try{
+                    val outputStream: FileOutputStream
+                    val name = "book${id}"
+                    outputStream = requireContext().openFileOutput(name, Context.MODE_PRIVATE)
+                    outputStream.write(it)
+                    Toast.makeText(requireContext(), "Successfully downloaded book ${book.id}", Toast.LENGTH_SHORT).show()
+                } catch(e : Exception){
+                    e.printStackTrace()
                 }
-                , {
-                    Toast.makeText(requireContext(), "Failed to download book!", Toast.LENGTH_SHORT).show()
-                }
+            }
+        , {
+                Toast.makeText(requireContext(), "Failed to download book!", Toast.LENGTH_SHORT).show()
+            })
 
-            )
-        )
+        volleyQueue.add(newRequest)
+
     }
 }
