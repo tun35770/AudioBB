@@ -6,17 +6,13 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.service.controls.Control
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.squareup.picasso.Picasso
 import edu.temple.audlibplayer.PlayerService
 import java.io.File
-import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, ControlFragment.ControlInterface {
 
@@ -163,14 +159,17 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
 
     /* ControlFragment Interface functions */
 
-    override fun onPlayPressed() {
+    override fun onPlayPressed(pos: Int?) {
         val fileName = "book${book.id}.mp3"
         val file = File(filesDir, fileName);
 
         //if a book is selected
         if (!bookViewModel.getBook().value?.title.isNullOrBlank()){
             if(file.exists()) { //if book has been downloaded
-                mediaControlBinder.play(    File(this.filesDir,    fileName), 0)
+                if(pos != null)
+                    mediaControlBinder.play(    File(this.filesDir,    fileName), pos)
+                else
+                    mediaControlBinder.play(    File(this.filesDir,    fileName), 0)
                 Log.d("FILE", "Book ${book.id} played from file")
             }
 
@@ -207,7 +206,7 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
         return isConnected
     }
 
-    override fun mediaControlBinderInitialized(): Boolean {
-        return this::mediaControlBinder.isInitialized
+    override fun bookProgressInitialized(): Boolean {
+        return this::bookProgress.isInitialized
     }
 }

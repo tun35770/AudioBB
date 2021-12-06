@@ -1,10 +1,7 @@
 package edu.temple.audiobb
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.service.controls.Control
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,11 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
-import com.squareup.picasso.Picasso
 import edu.temple.audlibplayer.PlayerService
-import org.json.JSONException
 import java.io.File
 import java.io.FileOutputStream
 
@@ -78,7 +72,7 @@ class ControlFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        var sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         val savedBookTitle = sharedPref?.getString("PlayingBookTitle", "default")
 
         //if book has been saved
@@ -90,7 +84,23 @@ class ControlFragment : Fragment() {
             book = it
 
             playButton.setOnClickListener {
-                (requireActivity() as ControlInterface).onPlayPressed()
+
+                //save current books progress
+                if((requireActivity() as ControlInterface).isPlaying()){
+                    sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", bookProgress.progress)?.apply()
+                }
+
+                //play book
+
+                val savedPosition = sharedPref?.getInt("BookPosition${book.id}", 0)
+                Log.d("POS", savedPosition.toString())
+                (requireActivity() as ControlInterface).onPlayPressed(savedPosition)
+
+                //set playingBook viewmodel
+                bookPlayingViewModel.setCurrentBook(book)
+
+                //save current books title
+                sharedPref?.edit()?.putString("PlayingBookTitle", playingBook.title)?.apply()
 
                 val fileName = "book${book.id}.mp3"
                 val file = File(requireContext().filesDir, fileName);
@@ -105,7 +115,6 @@ class ControlFragment : Fragment() {
                     t.start()
 
                 seekBar.max = (book.duration)   //set seekbar's length
-                bookPlayingViewModel.setCurrentBook(book)
             }
 
             pauseButton.setOnClickListener {
@@ -113,6 +122,8 @@ class ControlFragment : Fragment() {
                 if((requireActivity() as ControlInterface).isPlaying()) {   //if currently playing
                     running = false //stop thread
                     pauseButton.setText("Resume")
+                    //save progress
+                    sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", bookProgress.progress)?.apply()
                 }
                 else {  //if currently paused
                     running = true  //start thread
@@ -127,8 +138,6 @@ class ControlFragment : Fragment() {
                 textView.text = ""
                 running = false
                 pauseButton.setText("Pause")
-                val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-                sharedPref?.edit()?.putString("PlayingBookTitle", playingBook.title)?.apply()
             }
 
             seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
@@ -166,7 +175,7 @@ class ControlFragment : Fragment() {
     val t = Thread(Runnable{    //Thread for seekbar updates
         Thread.sleep(3000)
         while(running){
-            if((requireActivity() as ControlInterface).mediaControlBinderInitialized()) {
+            if((requireActivity() as ControlInterface).bookProgressInitialized()) {
                 bookProgress = (requireActivity() as ControlInterface).getProgress()
                 seekBar.setProgress(bookProgress.progress)
             }
@@ -178,14 +187,14 @@ class ControlFragment : Fragment() {
     })
 
     interface ControlInterface{
-        fun onPlayPressed() //play button
+        fun onPlayPressed(pos: Int?) //play button
         fun onPausePressed()    //pause button
         fun onStopPressed() //stop button
         fun getProgress(): PlayerService.BookProgress   //BookProgress object
         fun isPlaying(): Boolean    //check if audio is playing
         fun jumpTo(position: Int)   //seekTo
         fun isServiceConnected(): Boolean   //check if service is connected
-        fun mediaControlBinderInitialized(): Boolean
+        fun bookProgressInitialized(): Boolean
     }
 
     override fun onDestroy() {
