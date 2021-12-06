@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import edu.temple.audlibplayer.PlayerService
+import java.io.File
 import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, ControlFragment.ControlInterface {
@@ -163,9 +164,23 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     /* ControlFragment Interface functions */
 
     override fun onPlayPressed() {
-        if(!bookViewModel.getBook().value?.title.isNullOrBlank()) {
-            mediaControlBinder.play(book.id)    //play book
+        val fileName = "book${book.id}.mp3"
+        val file = File(fileName);
+
+        //if a book is selected
+        if (!bookViewModel.getBook().value?.title.isNullOrBlank()){
+            if(file.exists()) { //if book has been downloaded
+                mediaControlBinder.play(    File(this.filesDir,    fileName), 0)
+                Log.d("FILE", "Book ${book.id} played from file")
+            }
+
+            else {  //book has not been downloaded, so stream it
+                mediaControlBinder.play(book.id)    //play book
+            }
         }
+
+
+
     }
 
     override fun onPausePressed() {
