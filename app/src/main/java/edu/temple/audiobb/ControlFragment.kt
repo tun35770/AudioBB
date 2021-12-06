@@ -73,11 +73,6 @@ class ControlFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         var sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-        val savedBookTitle = sharedPref?.getString("PlayingBookTitle", "default")
-
-        //if book has been saved
-        if(savedBookTitle != "default")
-            textView.text = "Now Playing: ${savedBookTitle}"
 
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
@@ -99,9 +94,6 @@ class ControlFragment : Fragment() {
                 //set playingBook viewmodel
                 bookPlayingViewModel.setCurrentBook(book)
 
-                //save current books title
-                sharedPref?.edit()?.putString("PlayingBookTitle", playingBook.title)?.apply()
-
                 val fileName = "book${book.id}.mp3"
                 val file = File(requireContext().filesDir, fileName);
 
@@ -109,7 +101,7 @@ class ControlFragment : Fragment() {
                 if(!file.exists())
                     downloadBook(book.id)
 
-                textView.text = "Now Playing: ${book.title}"
+                textView.text = "Now Playing: ${playingBook.title}"
                 running = true
                 if(!t.isAlive)
                     t.start()
