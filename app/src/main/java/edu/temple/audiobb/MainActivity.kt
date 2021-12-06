@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import edu.temple.audlibplayer.PlayerService
 import java.io.File
+import java.io.FileInputStream
 
 class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, ControlFragment.ControlInterface {
 
@@ -73,6 +74,36 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
         bookViewModel.getBook().observe(this, Observer { it ->
             book = it
         })
+
+        //checking for a booklist saved to file
+        val fileName = "list.txt"
+        val file = File(filesDir, fileName)
+
+        if(file.exists()){
+            var bookListFromFile = BookList()
+            FileInputStream(file).bufferedReader().use{
+                var title = it.readLine()
+
+
+                while(title != null){
+                    Log.d("TITLE", title)
+                    val b = Book(
+                        title        //title
+                    , it.readLine() //author
+                    , it.readLine().toInt() //id
+                    , it.readLine() //cover_url
+                    , it.readLine().toInt() //duration
+                    )
+
+                    bookListFromFile.add(b)
+                    title = it.readLine()
+
+                }
+            }
+
+           bookListViewModel.setBookList(bookListFromFile)
+        }
+
 
         // Pop DisplayFragment from stack if book was previously selected,
         // but user has since cleared selection

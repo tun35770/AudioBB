@@ -39,8 +39,6 @@ class ControlFragment : Fragment() {
         Volley.newRequestQueue(requireContext())
     }
 
-    //val sharedPref = activity?.getSharedPreferences("BookName", Context.MODE_PRIVATE)
-
     lateinit var book: Book
     lateinit var bookViewModel: BookViewModel
     lateinit var bookProgressViewModel: BookProgressViewModel
@@ -72,6 +70,7 @@ class ControlFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //preferences for saving book progresses
         var sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
 
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)

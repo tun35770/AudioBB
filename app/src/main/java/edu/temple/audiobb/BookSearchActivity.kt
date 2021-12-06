@@ -8,11 +8,16 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
+import java.lang.System.out
 
 class BookSearchActivity : AppCompatActivity() {
 
@@ -30,6 +35,7 @@ class BookSearchActivity : AppCompatActivity() {
 
     lateinit var bookList: BookList
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_search)
@@ -43,6 +49,11 @@ class BookSearchActivity : AppCompatActivity() {
     //fetches books from api
     private fun fetchBookData(searchTerm: String){
         val url = "https://kamorris.com/lab/cis3515/search.php?term=${searchTerm}"
+        val file = File(this.filesDir, "list.txt")
+
+        //delete existing list
+        if(file.exists())
+            file.delete()
 
         if(getIntent().extras != null)
             bookList = intent.getParcelableExtra<BookList>("booklist")!!
@@ -66,6 +77,25 @@ class BookSearchActivity : AppCompatActivity() {
                             , responseObject.getInt("duration"))
 
                             bookList.add(b)    //add book to bookList
+
+                            //write book info to list file
+                            /*file.bufferedWriter().use{
+                                out.println(b.title)
+                                out.println(b.author)
+                                out.println(b.id)
+                                out.println(b.coverURL)
+                                out.println(b.duration)
+                            }*/
+
+                           FileWriter(file, true).use{
+                                it.append("${b.title}\n".toString())
+                                it.append("${b.author}\n".toString())
+                                it.append("${b.id}\n".toString())
+                                it.append("${b.coverURL}\n".toString())
+                                it.append("${b.duration}\n".toString())
+
+                            }
+
                         }
 
                         resultIntent.putExtra("list", bookList)
