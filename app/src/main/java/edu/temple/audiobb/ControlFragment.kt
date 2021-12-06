@@ -45,6 +45,8 @@ class ControlFragment : Fragment() {
         Volley.newRequestQueue(requireContext())
     }
 
+    //val sharedPref = activity?.getSharedPreferences("BookName", Context.MODE_PRIVATE)
+
     lateinit var book: Book
     lateinit var bookViewModel: BookViewModel
     lateinit var bookProgressViewModel: BookProgressViewModel
@@ -75,6 +77,14 @@ class ControlFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val savedBookTitle = sharedPref?.getString("PlayingBookTitle", "default")
+
+        //if book has been saved
+        if(savedBookTitle != "default")
+            textView.text = "Now Playing: ${savedBookTitle}"
+
         bookViewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
         bookViewModel.getBook().observe(viewLifecycleOwner, Observer{it ->
             book = it
@@ -117,6 +127,8 @@ class ControlFragment : Fragment() {
                 textView.text = ""
                 running = false
                 pauseButton.setText("Pause")
+                val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+                sharedPref?.edit()?.putString("PlayingBookTitle", playingBook.title)?.apply()
             }
 
             seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
