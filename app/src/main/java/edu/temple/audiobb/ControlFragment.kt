@@ -1,5 +1,8 @@
 package edu.temple.audiobb
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.service.controls.Control
 import android.util.Log
@@ -10,10 +13,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.Volley
 import com.squareup.picasso.Picasso
 import edu.temple.audlibplayer.PlayerService
+import org.json.JSONException
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * A simple [Fragment] subclass.
@@ -29,6 +40,10 @@ class ControlFragment : Fragment() {
     private lateinit var textView: TextView
     private lateinit var bookProgress: PlayerService.BookProgress
     private lateinit var playingBook: Book
+
+    val volleyQueue : RequestQueue by lazy{
+        Volley.newRequestQueue(requireContext())
+    }
 
     lateinit var book: Book
     lateinit var bookViewModel: BookViewModel
@@ -66,6 +81,10 @@ class ControlFragment : Fragment() {
 
             playButton.setOnClickListener {
                 (requireActivity() as ControlInterface).onPlayPressed()
+
+                //if not already downloaded
+                val file = File(context?.filesDir, "book${book.id}")
+
                 textView.text = "Now Playing: ${book.title}"
                 running = true
                 if(!t.isAlive)
@@ -166,5 +185,31 @@ class ControlFragment : Fragment() {
             textView.text = "Now Playing: ${playingBook.title}"
             seekBar.max = (playingBook.duration)
         }
+    }
+
+    fun downloadBook(id: Int){
+        val url = "https://kamorris.com/lab/audlib/download.php?id=${id}"
+
+        volleyQueue.add(
+            JsonArrayRequest(
+                Request.Method.GET
+                , url
+                , null
+                , {
+                    try{
+                        val outputStream: FileOutputStream
+                        val name = "book${id}.mp3"
+                        outputStream = requireContext().openFileOutput(name, Context.MODE_PRIVATE)
+                        outputStream.write(it.toJSONObject(it).toString().toByteArray())
+                    } catch(e : JSONException){
+                        e.printStackTrace()
+                    }
+                }
+                , {
+                    Toast.makeText(requireContext(), "Failed to download book!", Toast.LENGTH_SHORT).show()
+                }
+
+            )
+        )
     }
 }
