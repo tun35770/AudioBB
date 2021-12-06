@@ -138,6 +138,7 @@ class ControlFragment : Fragment() {
                 textView.text = ""
                 running = false
                 pauseButton.setText("Pause")
+                sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", 0)?.apply()
             }
 
             seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
