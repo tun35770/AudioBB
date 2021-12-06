@@ -206,4 +206,8 @@ class MainActivity : AppCompatActivity(), BookListFragment.EventInterface, Contr
     override fun isServiceConnected(): Boolean {
         return isConnected
     }
+
+    override fun mediaControlBinderInitialized(): Boolean {
+        return this::mediaControlBinder.isInitialized
+    }
 }

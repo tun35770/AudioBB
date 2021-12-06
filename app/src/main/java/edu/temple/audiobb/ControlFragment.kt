@@ -154,8 +154,10 @@ class ControlFragment : Fragment() {
     val t = Thread(Runnable{    //Thread for seekbar updates
         Thread.sleep(3000)
         while(running){
-            bookProgress = (requireActivity() as ControlInterface).getProgress()
-            seekBar.setProgress(bookProgress.progress)
+            if((requireActivity() as ControlInterface).mediaControlBinderInitialized()) {
+                bookProgress = (requireActivity() as ControlInterface).getProgress()
+                seekBar.setProgress(bookProgress.progress)
+            }
             Log.d("Progress", bookProgress.progress.toString())
             Thread.sleep(1000)
 
@@ -171,6 +173,7 @@ class ControlFragment : Fragment() {
         fun isPlaying(): Boolean    //check if audio is playing
         fun jumpTo(position: Int)   //seekTo
         fun isServiceConnected(): Boolean   //check if service is connected
+        fun mediaControlBinderInitialized(): Boolean
     }
 
     override fun onDestroy() {
@@ -188,7 +191,9 @@ class ControlFragment : Fragment() {
         if(this::playingBook.isInitialized) {   //reinitialize some values after configuration change
             textView.text = "Now Playing: ${playingBook.title}"
             seekBar.max = (playingBook.duration)
+
         }
+
     }
 
     fun downloadBook(id: Int){
