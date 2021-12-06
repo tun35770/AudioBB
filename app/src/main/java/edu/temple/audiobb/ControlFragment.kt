@@ -90,7 +90,7 @@ class ControlFragment : Fragment() {
 
                 //save current books progress
                 if((requireActivity() as ControlInterface).isPlaying()){
-                    sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", bookProgress.progress)?.apply()
+                    sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", bookProgress.progress)?.commit()
                 }
 
                 //play book
@@ -122,7 +122,7 @@ class ControlFragment : Fragment() {
                     running = false //stop thread
                     isPlayingViewModel.setIsPlaying(false)
                     //save progress
-                    sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", bookProgress.progress)?.apply()
+                    sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", bookProgress.progress)?.commit()
                 }
                 else {  //if currently paused
                     running = true  //start thread
@@ -137,7 +137,7 @@ class ControlFragment : Fragment() {
                 textView.text = ""
                 running = false
                 isPlayingViewModel.setIsPlaying(false)
-                sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", 0)?.apply()
+                sharedPref?.edit()?.putInt("BookPosition${playingBook.id}", 0)?.commit()
 
             }
 
