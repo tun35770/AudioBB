@@ -82,8 +82,8 @@ class ControlFragment : Fragment() {
             playButton.setOnClickListener {
                 (requireActivity() as ControlInterface).onPlayPressed()
 
-                val fileName = "book${book.id}"
-                val file = File(fileName);
+                val fileName = "book${book.id}.mp3"
+                val file = File(requireContext().filesDir, fileName);
 
                 //if not already downloaded
                 if(!file.exists())
@@ -200,7 +200,7 @@ class ControlFragment : Fragment() {
         , {
                 try{
                     val outputStream: FileOutputStream
-                    val name = "book${id}"
+                    val name = "book${id}.mp3"
                     outputStream = requireContext().openFileOutput(name, Context.MODE_PRIVATE)
                     outputStream.write(it)
                     Toast.makeText(requireContext(), "Successfully downloaded book ${book.id}", Toast.LENGTH_SHORT).show()
